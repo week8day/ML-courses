@@ -1,1 +1,1 @@
-# neimark-cource
+# Neimark course
