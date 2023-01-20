@@ -1,1 +1,1 @@
-# Neimark course
+# Neimark ML-course
