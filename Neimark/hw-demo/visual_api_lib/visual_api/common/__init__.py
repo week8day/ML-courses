@@ -9,6 +9,7 @@ from .performance_metrics import PerformanceMetrics
 from .resize import RESIZE_TYPES, pad_image
 from .types import NumericalValue, StringValue, DictValue, ListValue, BooleanValue
 from .utils import InputTransform, softmax, resolution
+from .colors import get_color
 
 __all__ = [
     "NetworkInfo",
@@ -23,6 +24,5 @@ __all__ = [
     "open_images_capture",
     "PerformanceMetrics",
     "resolution",
-
     "RESIZE_TYPES"
 ]
