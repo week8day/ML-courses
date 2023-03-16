@@ -108,17 +108,18 @@ class ImageModel(Model):
             - the input metadata, which might be used in `postprocess` method
         '''
 
-        # ------------------------------------
-        #print("INP:", inputs)
-
         image = inputs
         meta = {'original_shape': image.shape}
-        resized_image = image
-        #resized_image = self.resize(image, (self.w, self.h))
-        #meta.update({'resized_shape': resized_image.shape})
-        #if self.resize_type == 'fit_to_window':
-        #    resized_image = pad_image(resized_image, (self.w, self.h))
-        #    meta.update({'padded_shape': resized_image.shape})
+
+        if type(self.h) is not str:
+            resized_image = self.resize(image, (self.w, self.h))
+            meta.update({'resized_shape': resized_image.shape})
+            if self.resize_type == 'fit_to_window':
+                resized_image = pad_image(resized_image, (self.w, self.h))
+                meta.update({'padded_shape': resized_image.shape})
+        else:
+            resized_image = image
+
         resized_image = self.input_transform(resized_image)
         resized_image = self._change_layout(resized_image)
         dict_inputs = {self.image_blob_name: resized_image}
