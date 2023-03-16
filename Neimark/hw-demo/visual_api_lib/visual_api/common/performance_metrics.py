@@ -58,7 +58,7 @@ class PerformanceMetrics:
         # Draw performance stats over frame
         current_latency, current_fps = self.get_last()
         if current_latency is not None:
-            put_highlighted_text(frame, "Latency: {:.4f} ms".format(current_latency * 1e3),
+            put_highlighted_text(frame, "Latency: {:.1f} ms".format(current_latency * 1e3),
                                  position, cv2.FONT_HERSHEY_COMPLEX, font_scale, color, thickness)
         if current_fps is not None:
             put_highlighted_text(frame, "FPS: {:.1f}".format(current_fps),
