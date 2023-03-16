@@ -94,13 +94,16 @@ def draw_boxes(frame, boxes, labels, obj_thresh):
         if box[2] > obj_thresh and label < len(labels):
             label_str = f"{labels[label]}, {box[2]:.2f}"
 
+            h = frame.shape[0]
+            w = frame.shape[1]
+
             text_size = cv2.getTextSize(label_str, cv2.FONT_HERSHEY_SIMPLEX, 1.1e-3 * frame.shape[1], 5)
             width, height = text_size[0][0], text_size[0][1]
 
-            b_xmin, b_ymin, b_xmax, b_ymax = int(box[0][1]*848), int(box[0][0]*480), int(box[0][3]*848), int(box[0][2]*480)
+            b_xmin, b_ymin, b_xmax, b_ymax = int(box[0][1]*w), int(box[0][0]*h), int(box[0][3]*w), int(box[0][2]*h)
 
-            region = np.array([[b_xmin,        b_ymin],
-                               [b_xmin,        b_ymin-height-15],
+            region = np.array([[b_xmin, b_ymin],
+                               [b_xmin, b_ymin-height-15],
                                [b_xmin+width+10, b_ymin-height-15],
                                [b_xmin+width+10, b_ymin]], dtype='int32')
 
@@ -108,7 +111,7 @@ def draw_boxes(frame, boxes, labels, obj_thresh):
             cv2.fillPoly(img=frame, pts=[region], color=(0, 255, 0))#get_color(label)
             cv2.putText(img=frame,
                         text=label_str,
-                        org=(b_xmin+13, b_ymin - 13),
+                        org=(b_xmin + 13, b_ymin - 13),
                         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=1e-3 * frame.shape[0],
                         color=(0,0,0),
