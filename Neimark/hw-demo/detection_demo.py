@@ -155,6 +155,8 @@ def main():
     metrics = PerformanceMetrics()
 
     while True:
+        current_time = perf_counter()
+
         # Get new image/frame
         frame = cap.read()
         if frame is None:
@@ -172,7 +174,7 @@ def main():
             print_raw_results(detections, next_frame_id)
 
         frame = draw_boxes(frame, detections, labels_list, THR_SCORE)
-        current_time = perf_counter()
+
         metrics.update(current_time, frame)
 
         if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id <= args.output_limit-1):
