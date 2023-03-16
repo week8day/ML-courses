@@ -13,12 +13,13 @@ import cv2
 from visual_api.handlers import SyncExecutor
 from visual_api.models import Detection
 import visual_api.launchers as launchers
-from visual_api.common import NetworkInfo, open_images_capture
+from visual_api.common import NetworkInfo, open_images_capture, PerformanceMetrics
 
 log.basicConfig(format='[ %(levelname)s ] %(message)s', level=log.DEBUG, stream=sys.stdout)
 
 import pandas as pd
 import numpy as np
+from time import perf_counter
 
 labels_list = pd.read_csv('labels.csv', delimiter=';', usecols=['label']).to_numpy().squeeze()
 
@@ -116,6 +117,7 @@ def draw_boxes(frame, boxes, labels, obj_thresh):
                         fontScale=1e-3 * frame.shape[0],
                         color=(0,0,0),
                         thickness=1)
+
     return frame
 
 def main():
@@ -150,6 +152,8 @@ def main():
 
     THR_SCORE = 0.5
 
+    metrics = PerformanceMetrics()
+
     while True:
         # Get new image/frame
         frame = cap.read()
@@ -168,6 +172,9 @@ def main():
             print_raw_results(detections, next_frame_id)
 
         frame = draw_boxes(frame, detections, labels_list, THR_SCORE)
+        current_time = perf_counter()
+        metrics.update(current_time, frame)
+
         if video_writer.isOpened() and (args.output_limit <= 0 or next_frame_id <= args.output_limit-1):
             video_writer.write(frame)
 
