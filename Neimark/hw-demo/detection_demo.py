@@ -13,7 +13,7 @@ import cv2
 from visual_api.handlers import SyncExecutor
 from visual_api.models import Detection
 import visual_api.launchers as launchers
-from visual_api.common import NetworkInfo, open_images_capture, PerformanceMetrics
+from visual_api.common import NetworkInfo, open_images_capture, PerformanceMetrics, get_color
 
 log.basicConfig(format='[ %(levelname)s ] %(message)s', level=log.DEBUG, stream=sys.stdout)
 
@@ -108,8 +108,8 @@ def draw_boxes(frame, boxes, labels, obj_thresh):
                                [b_xmin+width+10, b_ymin-height-15],
                                [b_xmin+width+10, b_ymin]], dtype='int32')
 
-            cv2.rectangle(img=frame, pt1=(b_xmin,b_ymin), pt2=(b_xmax,b_ymax), color=(0, 255, 0), thickness=2)#get_color(label)
-            cv2.fillPoly(img=frame, pts=[region], color=(0, 255, 0))#get_color(label)
+            cv2.rectangle(img=frame, pt1=(b_xmin,b_ymin), pt2=(b_xmax,b_ymax), color=get_color(label), thickness=2)#
+            cv2.fillPoly(img=frame, pts=[region], color=get_color(label))
             cv2.putText(img=frame,
                         text=label_str,
                         org=(b_xmin + 13, b_ymin - 13),
